@@ -263,8 +263,12 @@ export default function HeroSection() {
               >
                 <div className="w-8 h-8 rounded-full border-2 border-fortivex-red/50 border-t-fortivex-red animate-spin motion-reduce:animate-none" />
               </div>
-              {/* Spline 3D scene — loads under poster; onLoad hides poster */}
-              <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-105">
+              {/* Spline 3D scene — loads under poster; onLoad hides poster.
+                  No transform here: Spline's own mouse-look math reads this
+                  container's bounding rect, and a CSS scale transform (even
+                  mid-transition) desyncs that from the canvas's actual size,
+                  making the robot's pose swing erratically on hover. */}
+              <div className="absolute inset-0">
                 <SplineScene
                     scene={SPLINE_SCENE_URL}
                     className="w-full h-full"
