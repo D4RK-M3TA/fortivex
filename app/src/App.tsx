@@ -35,6 +35,15 @@ function App() {
     }
   }, []);
 
+  // Space Grotesk (all headings) loads async via @import in index.css. GSAP's
+  // pin/ScrollTrigger heights are calculated at mount time, before the font
+  // swaps in and changes text metrics — leaving stale, undersized pin-spacers
+  // and a blank gap above pinned sections until something else triggers a
+  // resize. Refresh once the real font is actually in place.
+  useEffect(() => {
+    document.fonts.ready.then(() => ScrollTrigger.refresh());
+  }, []);
+
   useEffect(() => {
     // Wait for all sections to mount and create their ScrollTriggers
     const timer = setTimeout(() => {
