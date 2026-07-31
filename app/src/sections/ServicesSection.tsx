@@ -113,8 +113,8 @@ export default function ServicesSection() {
     >
       {/* Background gradient */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-fortivex-red/5 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-fortivex-red/5 rounded-full blur-[80px]" />
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] max-w-[100vw] bg-fortivex-red/5 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] max-w-[100vw] bg-fortivex-red/5 rounded-full blur-[80px]" />
       </div>
 
       <div className="w-full px-6 lg:px-12 xl:px-20 relative">

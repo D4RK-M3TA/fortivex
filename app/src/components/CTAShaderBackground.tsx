@@ -103,8 +103,12 @@ export function CTAShaderBackground() {
       if (!container || !refs.renderer || !refs.uniforms) return;
       const w = container.clientWidth;
       const h = container.clientHeight;
-      canvas.width = w;
-      canvas.height = h;
+      // updateStyle:false means Three.js won't touch canvas.style — it only sets
+      // the (DPR-scaled) drawing buffer. Without setting CSS size ourselves, the
+      // canvas has no layout constraint and renders at its buffer's pixel size
+      // (e.g. 2x too wide on high-DPR mobile screens), forcing the whole page wider.
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
       refs.renderer.setSize(w, h, false);
       refs.uniforms.resolution.value.set(w, h);
     };

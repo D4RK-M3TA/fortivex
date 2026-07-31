@@ -76,7 +76,7 @@ export default function TechStackSection() {
     >
       {/* Background elements */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-fortivex-red/5 rounded-full blur-[100px]" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] max-w-[100vw] bg-fortivex-red/5 rounded-full blur-[100px]" />
       </div>
 
       <div className="w-full px-6 lg:px-12 xl:px-20 relative">

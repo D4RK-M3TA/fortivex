@@ -168,7 +168,7 @@ export default function ProcessSection() {
 
       {/* Background glow */}
       <div 
-        className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none"
+        className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] max-w-[100vw] pointer-events-none"
         style={{
           background: 'radial-gradient(circle, rgba(229, 57, 53, 0.08), transparent 50%)',
           filter: 'blur(60px)',

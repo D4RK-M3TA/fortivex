@@ -112,7 +112,7 @@ export default function AutomationSection() {
     >
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-fortivex-red/5 rounded-full blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] max-w-[100vw] bg-fortivex-red/5 rounded-full blur-[100px]" />
       </div>
 
       <div className="w-full px-6 lg:px-12 xl:px-20 relative">

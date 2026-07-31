@@ -111,7 +111,7 @@ export default function ContactSection() {
     >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-fortivex-red/5 rounded-full blur-[100px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] max-w-[100vw] bg-fortivex-red/5 rounded-full blur-[100px]" />
       </div>
 
       <div className="w-full px-6 lg:px-12 xl:px-20 relative">
@@ -140,10 +140,12 @@ export default function ContactSection() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="form-field">
-                    <label className="block text-xs font-medium text-fortivex-text-secondary mb-1.5">Name</label>
+                    <label htmlFor="contact-name" className="block text-xs font-medium text-fortivex-text-secondary mb-1.5">Name</label>
                     <input
+                      id="contact-name"
                       type="text"
                       name="name"
+                      autoComplete="name"
                       value={formData.name}
                       onChange={handleChange}
                       required
@@ -152,10 +154,12 @@ export default function ContactSection() {
                     />
                   </div>
                   <div className="form-field">
-                    <label className="block text-xs font-medium text-fortivex-text-secondary mb-1.5">Email</label>
+                    <label htmlFor="contact-email" className="block text-xs font-medium text-fortivex-text-secondary mb-1.5">Email</label>
                     <input
+                      id="contact-email"
                       type="email"
                       name="email"
+                      autoComplete="email"
                       value={formData.email}
                       onChange={handleChange}
                       required
@@ -165,10 +169,12 @@ export default function ContactSection() {
                   </div>
                 </div>
                 <div className="form-field">
-                  <label className="block text-xs font-medium text-fortivex-text-secondary mb-1.5">Company</label>
+                  <label htmlFor="contact-company" className="block text-xs font-medium text-fortivex-text-secondary mb-1.5">Company</label>
                   <input
+                    id="contact-company"
                     type="text"
                     name="company"
+                    autoComplete="organization"
                     value={formData.company}
                     onChange={handleChange}
                     className="w-full px-3 py-2.5 text-sm rounded-lg bg-fortivex-surface-glass border border-fortivex-border-subtle text-fortivex-text-primary placeholder:text-fortivex-text-secondary/50 focus:outline-none focus:border-fortivex-red transition-colors"
@@ -176,8 +182,9 @@ export default function ContactSection() {
                   />
                 </div>
                 <div className="form-field">
-                  <label className="block text-xs font-medium text-fortivex-text-secondary mb-1.5">Project notes</label>
+                  <label htmlFor="contact-notes" className="block text-xs font-medium text-fortivex-text-secondary mb-1.5">Project notes</label>
                   <textarea
+                    id="contact-notes"
                     name="notes"
                     value={formData.notes}
                     onChange={handleChange}

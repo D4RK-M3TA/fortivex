@@ -113,7 +113,7 @@ export default function CaseStudiesSection() {
       {/* Background glow */}
       <div 
         ref={glowRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] max-w-[100vw] pointer-events-none"
         style={{
           background: 'radial-gradient(circle, rgba(229, 57, 53, 0.1), transparent 50%)',
           filter: 'blur(60px)',

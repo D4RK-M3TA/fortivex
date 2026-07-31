@@ -65,6 +65,7 @@ export default function Navbar() {
             ? 'bg-transparent'
             : 'bg-white/90 backdrop-blur-2xl border-b border-fortivex-border-subtle'
         }`}
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
         <div className="w-full px-6 lg:px-12">
           <div className="flex items-center justify-between h-16 lg:h-20">
@@ -119,7 +120,7 @@ export default function Navbar() {
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
-              className={`lg:hidden p-2 rounded-lg transition-colors ${
+              className={`lg:hidden p-2.5 rounded-lg transition-colors ${
                 isHeroInView
                   ? 'text-white hover:bg-white/10'
                   : 'text-fortivex-text-primary hover:bg-fortivex-surface-glass'
@@ -141,12 +142,19 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.3 }}
             className="fixed inset-0 z-40 lg:hidden"
+            style={{ overscrollBehavior: 'contain' }}
           >
             <div
               className="absolute inset-0 bg-fortivex-black/95 backdrop-blur-2xl"
               onClick={() => setIsMobileMenuOpen(false)}
             />
-            <div className="relative flex flex-col items-center justify-center h-full gap-6">
+            <div
+              className="relative flex flex-col items-center justify-center h-full gap-6"
+              style={{
+                paddingTop: 'env(safe-area-inset-top)',
+                paddingBottom: 'env(safe-area-inset-bottom)',
+              }}
+            >
               {/* Mobile Logo */}
               <div className="text-white mb-8">
                 <Logo variant="dark" height={48} className="h-12 w-auto" />
@@ -159,7 +167,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: reduceMotion ? 0 : index * 0.04 }}
                   onClick={(e) => goToSectionMobile(e, link.href)}
-                  className="text-3xl font-heading font-medium text-fortivex-text-primary hover:text-fortivex-red transition-colors"
+                  className="text-3xl font-heading font-medium text-white hover:text-fortivex-red transition-colors"
                 >
                   {link.label}
                 </motion.a>

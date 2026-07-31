@@ -156,7 +156,7 @@ export default function HeroSection() {
       {/* Animated glow */}
       <div 
         ref={glowRef}
-        className="absolute top-[20%] right-[25%] w-[600px] h-[600px] pointer-events-none z-[2]"
+        className="absolute top-[20%] right-[25%] w-[600px] h-[600px] max-w-[100vw] pointer-events-none z-[2]"
         style={{
           background: 'radial-gradient(circle, rgba(229, 57, 53, 0.18), transparent 60%)',
           filter: 'blur(40px)',
