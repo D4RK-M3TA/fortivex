@@ -85,7 +85,10 @@ export default function HeroSection() {
   useLayoutEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-    if (prefersReducedMotion()) return; // no forced pin/scroll-jack for reduced motion
+    // No pin/scroll-jack for reduced motion, or below `lg`: the text block +
+    // full 3D card stack in one column there and don't fit one screen — pinning
+    // to a fixed 100dvh would force clipping one of them. Let it flow instead.
+    if (prefersReducedMotion() || window.innerWidth < 1024) return;
 
     const ctx = gsap.context(() => {
       const scrollTl = gsap.timeline({

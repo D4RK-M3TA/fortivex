@@ -152,7 +152,20 @@
     height: 100dvh; /* visible viewport on mobile, avoids address-bar clipping */
     max-height: 100vh;
   }
-  
+
+  /* Hero's text block + full-size 3D card stack in one column below `lg` and
+     don't fit in a single mobile screen. GSAP pin/scrub is skipped on mobile
+     to match (see HeroSection.tsx) — let the section grow to its natural
+     content height instead of clipping the 3D card to fit 100dvh. */
+  @media (max-width: 1023px) {
+    #hero.section-pinned {
+      height: auto;
+      max-height: none;
+      overflow: visible;
+    }
+  }
+
+
   .section-flowing {
     @apply relative w-full py-28 lg:py-36;
   }
