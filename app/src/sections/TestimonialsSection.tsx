@@ -1,20 +1,17 @@
 import { useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Quote, Star } from 'lucide-react';
-import { prefersReducedMotion } from '@/lib/motion';
-
-gsap.registerPlugin(ScrollTrigger);
+import { prefersReducedMotion, revealOnScroll } from '@/lib/motion';
 
 const testimonials = [
   {
-    quote: 'FortiVex built our BI web app for the chrome washing plant—we now have real-time visibility into production, throughput, and quality. Exactly what we needed.',
+    quote: 'FortiVex built our BI web app for the chrome washing plant. We now have real-time visibility into production, throughput, and quality. Exactly what we needed.',
     author: 'Tefo Mokoena',
     role: 'COO at Menelinks Mining Pty Ltd',
     rating: 4,
   },
   {
-    quote: 'FortiVex built our ticketing and payment system—we used to do everything manually. Now we sell tickets and take payments online. Game changer.',
+    quote: 'FortiVex built our ticketing and payment system. We used to do everything manually. Now we sell tickets and take payments online. Game changer.',
     author: 'Abednego Masike',
     role: 'Manager',
     rating: 5,
@@ -32,61 +29,14 @@ export default function TestimonialsSection() {
     const cards = cardsRef.current;
     if (!section || !header || !cards) return;
     if (prefersReducedMotion()) {
-      gsap.set(
-        [header, ...cards.querySelectorAll('.testimonial-card'), ...cards.querySelectorAll('.quote-text')],
-        { clearProps: 'all' }
-      );
+      gsap.set([header, ...cards.querySelectorAll('.testimonial-card')], { clearProps: 'all' });
       return;
     }
 
     const ctx = gsap.context(() => {
-      // Header animation
-      gsap.fromTo(header,
-        { x: '-5vw', opacity: 0 },
-        {
-          x: 0, opacity: 1,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 75%',
-            end: 'top 55%',
-            scrub: 0.25,
-          }
-        }
-      );
-
-      // Cards animation
-      const cardElements = cards.querySelectorAll('.testimonial-card');
-      cardElements.forEach((card, index) => {
-        const direction = index === 0 ? '-8vw' : '8vw';
-        gsap.fromTo(card,
-          { x: direction, opacity: 0, rotateY: index === 0 ? 5 : -5 },
-          {
-            x: 0, opacity: 1, rotateY: 0,
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 85%',
-              end: 'top 55%',
-              scrub: 0.3,
-            }
-          }
-        );
-
-        // Quote text animation
-        const quoteText = card.querySelector('.quote-text');
-        if (quoteText) {
-          gsap.fromTo(quoteText,
-            { y: 20, opacity: 0 },
-            {
-              y: 0, opacity: 1,
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 80%',
-                end: 'top 50%',
-                scrub: 0.25,
-              }
-            }
-          );
-        }
+      revealOnScroll(header, { x: -16 });
+      cards.querySelectorAll('.testimonial-card').forEach((card, i) => {
+        revealOnScroll(card, { y: 20, delay: i * 0.08 });
       });
     }, section);
 
@@ -94,11 +44,10 @@ export default function TestimonialsSection() {
   }, []);
 
   return (
-    <section 
+    <section
       id="testimonials"
       ref={sectionRef}
-      className="section-flowing bg-white relative"
-      style={{ zIndex: 80 }}
+      className="section-flowing bg-fortivex-raised relative"
     >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
@@ -115,23 +64,19 @@ export default function TestimonialsSection() {
         </div>
 
         {/* Testimonial Cards */}
-        <div 
+        <div
           ref={cardsRef}
           className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
         >
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.author}
-              className="testimonial-card glass-card p-8 lg:p-10 relative"
-              style={{ 
-                minHeight: '50vh',
-                perspective: '1000px',
-                transformStyle: 'preserve-3d'
-              }}
+              className="testimonial-card glass-card p-8 lg:p-10 relative flex flex-col"
+              style={{ minHeight: '50vh' }}
             >
               {/* Quote icon */}
               <div className="mb-6 flex items-center justify-between">
-                <Quote size={40} className="text-fortivex-red opacity-40" strokeWidth={1} />
+                <Quote size={40} className="text-fortivex-red opacity-40" strokeWidth={1} aria-hidden />
                 <div className="flex items-center gap-1">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} size={16} className="text-fortivex-red fill-fortivex-red" />
@@ -140,7 +85,7 @@ export default function TestimonialsSection() {
               </div>
 
               {/* Quote text */}
-              <blockquote className="quote-text font-heading text-xl lg:text-2xl text-fortivex-text-primary leading-relaxed mb-8">
+              <blockquote className="font-heading text-xl lg:text-2xl text-fortivex-text-primary leading-relaxed mb-8">
                 "{testimonial.quote}"
               </blockquote>
 
@@ -155,7 +100,7 @@ export default function TestimonialsSection() {
               </div>
 
               {/* Decorative element */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-fortivex-red/10 to-transparent rounded-bl-full" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-fortivex-red/10 to-transparent rounded-bl-full pointer-events-none" />
             </div>
           ))}
         </div>

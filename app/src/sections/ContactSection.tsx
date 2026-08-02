@@ -1,15 +1,12 @@
 import { useRef, useLayoutEffect, useState } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Send, Mail, MapPin, MessageCircle, CheckCircle } from 'lucide-react';
 
 const SUPPORT_EMAIL = 'fortivex.support@gmail.com';
 const WHATSAPP_URL = 'https://wa.me/27683572983'; // +27 68 357 2983
 import { toast } from 'sonner';
 import Logo from '@/components/Logo';
-import { prefersReducedMotion } from '@/lib/motion';
-
-gsap.registerPlugin(ScrollTrigger);
+import { prefersReducedMotion, revealOnScroll } from '@/lib/motion';
 
 export default function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -38,18 +35,7 @@ export default function ContactSection() {
     }
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(content,
-        { y: 24, opacity: 0 },
-        {
-          y: 0, opacity: 1,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 78%',
-            end: 'top 55%',
-            scrub: 0.25,
-          }
-        }
-      );
+      revealOnScroll(content, { y: 24, start: 'top 78%' });
     }, section);
 
     return () => ctx.revert();
@@ -106,8 +92,7 @@ export default function ContactSection() {
     <section 
       ref={sectionRef}
       id="contact"
-      className="section-flowing bg-white relative pb-0"
-      style={{ zIndex: 100 }}
+      className="section-flowing bg-fortivex-black relative pb-0"
     >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
@@ -194,7 +179,7 @@ export default function ContactSection() {
                   />
                 </div>
                 {submitError && (
-                  <p className="text-sm text-red-600">
+                  <p className="text-sm text-red-400">
                     {submitError}{' '}
                     <a href={`mailto:${SUPPORT_EMAIL}`} className="underline hover:text-fortivex-red">
                       Email us
@@ -252,7 +237,7 @@ export default function ContactSection() {
             {/* Logo and copyright */}
             <div className="flex flex-col items-center lg:items-start gap-2">
               <span className="text-fortivex-text-primary">
-                <Logo variant="light" height={36} className="h-9 w-auto" />
+                <Logo variant="dark" height={36} className="h-9 w-auto" />
               </span>
               <p className="text-sm text-fortivex-text-secondary">
                 © 2024 Fortivex Pty Ltd. All rights reserved.

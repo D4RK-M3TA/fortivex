@@ -1,9 +1,6 @@
 import { useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { prefersReducedMotion } from '@/lib/motion';
-
-gsap.registerPlugin(ScrollTrigger);
+import { prefersReducedMotion, revealOnScroll } from '@/lib/motion';
 
 const techStack = [
   { name: 'React', color: '#61DAFB' },
@@ -33,34 +30,9 @@ export default function TechStackSection() {
     }
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(content,
-        { y: 24, opacity: 0 },
-        {
-          y: 0, opacity: 1,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 78%',
-            end: 'top 50%',
-            scrub: 0.25,
-          }
-        }
-      );
-
-      const chipElements = content.querySelectorAll('.tech-chip');
-      chipElements.forEach((chip, index) => {
-        const direction = index % 2 === 0 ? -12 : 12;
-        gsap.fromTo(chip,
-          { x: direction, opacity: 0 },
-          {
-            x: 0, opacity: 1,
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 75%',
-              end: 'top 45%',
-              scrub: 0.2,
-            }
-          }
-        );
+      revealOnScroll(content, { y: 20 });
+      content.querySelectorAll('.tech-chip').forEach((chip, i) => {
+        revealOnScroll(chip, { y: 12, delay: 0.05 + i * 0.03, start: 'top 90%' });
       });
     }, section);
 
@@ -68,11 +40,10 @@ export default function TechStackSection() {
   }, []);
 
   return (
-    <section 
+    <section
       id="tech-stack"
       ref={sectionRef}
-      className="section-flowing bg-white relative"
-      style={{ zIndex: 40 }}
+      className="section-flowing bg-fortivex-raised relative"
     >
       {/* Background elements */}
       <div className="absolute inset-0 pointer-events-none">
@@ -88,7 +59,7 @@ export default function TechStackSection() {
               Tech Stack
             </h2>
             <p className="text-lg text-fortivex-text-secondary max-w-xl mx-auto">
-              Modern, proven, and maintainable—so your team can move fast without breaking things.
+              Built to scale from your first 10 customers to your 10,000th, without a rebuild.
             </p>
           </div>
 

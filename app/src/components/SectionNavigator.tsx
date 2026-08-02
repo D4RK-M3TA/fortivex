@@ -9,12 +9,11 @@ import { scrollToSection } from '@/lib/scroll';
 const SECTION_IDS = [
   'hero',
   'services',
+  'why',
   'work',
-  'tech-stack',
   'process',
-  'automation',
-  // 'team', // Meet the builders — commented out
   'testimonials',
+  'tech-stack',
   'cta',
   'contact',
 ];

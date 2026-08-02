@@ -1,55 +1,66 @@
 import { useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
-  Globe,
-  Workflow,
-  Plug,
-  Headphones,
-  MessageCircle,
   Bot,
+  Workflow,
+  Globe,
+  Headphones,
+  Search,
+  ArrowRight,
+  Check,
 } from 'lucide-react';
-import { prefersReducedMotion } from '@/lib/motion';
+import { prefersReducedMotion, revealOnScroll } from '@/lib/motion';
+import { handleSectionLinkClick } from '@/lib/scroll';
 import { PatternPanel } from '@/components/ui/pattern-panel';
 
-gsap.registerPlugin(ScrollTrigger);
-
-const services = [
+const tiers = [
   {
-    icon: Globe,
-    title: 'Web Applications',
-    description: 'React/Next.js frontends that feel instant. Built for performance and scale.',
-    gradient: 'from-blue-500/20 to-cyan-500/20',
+    icon: Bot,
+    title: 'AI Agents & WhatsApp Bots',
+    description: 'Automated conversations that qualify leads, take orders, and support customers, live on WhatsApp and web, 24/7.',
+    bullets: [
+      'Lead qualification & booking flows',
+      'Order & support conversations',
+      'Handoff to a human when it matters',
+      'Live on WhatsApp, web, or both',
+    ],
   },
   {
     icon: Workflow,
     title: 'Business Automation',
-    description: 'Replace manual work with reliable workflows that run 24/7.',
-    gradient: 'from-emerald-500/20 to-teal-500/20',
+    description: 'Replace manual work with reliable workflows and integrations that run without you watching them.',
+    bullets: [
+      'Workflow & approval automation',
+      'API & tool integrations',
+      'Scheduled and event-driven jobs',
+      'Error recovery built in, not bolted on',
+    ],
   },
   {
-    icon: MessageCircle,
-    title: 'WhatsApp & Chatbots',
-    description: 'Automated conversations that qualify leads and support customers live on WhatsApp and web, 24/7.',
-    gradient: 'from-lime-500/20 to-green-500/20',
+    icon: Globe,
+    title: 'Websites & Custom Software',
+    description: 'Fast, modern web applications, from startup MVPs to production systems that scale with you.',
+    bullets: [
+      'Marketing sites & web apps',
+      'MVP builds for startups',
+      'Custom internal tools',
+      'API development & integrations',
+    ],
   },
-  {
-    icon: Plug,
-    title: 'API Development',
-    description: 'Clean contracts, strong security, fast performance. Built to last.',
-    gradient: 'from-orange-500/20 to-amber-500/20',
-  },
+];
+
+const extensions = [
   {
     icon: Headphones,
-    title: 'Support & Iteration',
-    description: 'Monitoring, fixes, and continuous improvement post-launch.',
-    gradient: 'from-rose-500/20 to-red-500/20',
+    title: 'Maintenance & Support Retainers',
+    description: 'Monitoring, fixes, and continuous improvement after launch.',
+    cta: 'Get a quote',
   },
   {
-    icon: Bot,
-    title: 'Agentic AI Systems',
-    description: 'Autonomous agents that plan, decide, and act across your tools, built with guardrails your team can trust.',
-    gradient: 'from-purple-500/20 to-pink-500/20',
+    icon: Search,
+    title: 'AI Readiness Audit',
+    description: "A clear look at where AI and automation will save your business the most time.",
+    cta: 'Book an audit',
   },
 ];
 
@@ -69,35 +80,9 @@ export default function ServicesSection() {
     }
 
     const ctx = gsap.context(() => {
-      // Title animation
-      gsap.fromTo(title,
-        { opacity: 0, x: '-8vw' },
-        {
-          opacity: 1, x: 0,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 75%',
-            end: 'top 45%',
-            scrub: 0.25,
-          }
-        }
-      );
-
-      // Cards animation with 3D effect
-      const cardElements = cards.querySelectorAll('.service-card');
-      cardElements.forEach((card) => {
-        gsap.fromTo(card,
-          { opacity: 0, y: '12vh', rotateX: 15, scale: 0.9 },
-          {
-            opacity: 1, y: 0, rotateX: 0, scale: 1,
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 90%',
-              end: 'top 55%',
-              scrub: 0.3,
-            }
-          }
-        );
+      revealOnScroll(title, { x: -24, start: 'top 80%' });
+      cards.querySelectorAll('.service-card').forEach((card, i) => {
+        revealOnScroll(card, { y: 20, delay: i * 0.08 });
       });
     }, section);
 
@@ -105,11 +90,10 @@ export default function ServicesSection() {
   }, []);
 
   return (
-    <section 
-      ref={sectionRef} 
+    <section
+      ref={sectionRef}
       id="services"
-      className="section-flowing bg-white relative"
-      style={{ zIndex: 20 }}
+      className="section-flowing bg-fortivex-black relative"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 pointer-events-none">
@@ -120,7 +104,7 @@ export default function ServicesSection() {
       <div className="w-full px-6 lg:px-12 xl:px-20 relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Title Block - Sticky on desktop */}
-          <div 
+          <div
             ref={titleRef}
             className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start"
           >
@@ -129,53 +113,87 @@ export default function ServicesSection() {
               Services
             </h2>
             <p className="text-lg text-fortivex-text-secondary leading-relaxed mb-8">
-              End-to-end engineering for modern teams—from first prototype to production automation.
+              Three ways we help you ship faster and run leaner, plus ongoing support once you're live.
             </p>
             <div className="hidden lg:block aspect-video rounded-2xl overflow-hidden">
-              <PatternPanel icon={Workflow} className="w-full h-full" />
+              <PatternPanel icon={Bot} className="w-full h-full" />
             </div>
           </div>
 
-          {/* Cards Grid */}
+          {/* Tier cards */}
           <div ref={cardsRef} className="lg:col-span-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {services.map((service) => {
-                const Icon = service.icon;
+            <div className="flex flex-col gap-5">
+              {tiers.map((tier) => {
+                const Icon = tier.icon;
                 return (
                   <div
-                    key={service.title}
-                    className={`service-card glass-card p-6 lg:p-8 group cursor-pointer transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-2 hover:border-fortivex-red/50 hover:shadow-glow-lg relative overflow-hidden`}
-                    style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
+                    key={tier.title}
+                    className="service-card glass-card p-6 lg:p-8 group transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-fortivex-red/50 hover:shadow-glow-lg"
                   >
-                    {/* Gradient background */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                    
-                    <div className="relative z-10">
-                      <div className="flex items-start gap-5">
-                        <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-fortivex-red/10 flex items-center justify-center group-hover:bg-fortivex-red/20 group-hover:scale-110 transition-[background-color,transform] duration-300">
-                          <Icon 
-                            size={26} 
-                            className="text-fortivex-red group-hover:text-fortivex-red transition-colors" 
-                            strokeWidth={1.5}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-heading text-xl lg:text-2xl font-medium text-fortivex-text-primary mb-2 group-hover:text-fortivex-red transition-colors">
-                            {service.title}
-                          </h3>
-                          <p className="text-fortivex-text-secondary leading-relaxed">
-                            {service.description}
-                          </p>
-                        </div>
+                    <div className="flex items-start gap-5 mb-5">
+                      <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-fortivex-red/10 flex items-center justify-center group-hover:bg-fortivex-red/20 group-hover:scale-110 transition-[background-color,transform] duration-300">
+                        <Icon size={26} className="text-fortivex-red" strokeWidth={1.5} />
                       </div>
-                      
-                      {/* Hover indicator */}
-                      <div className="mt-4 flex items-center gap-2 text-sm text-fortivex-red opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span>Learn more</span>
-                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
+                      <div className="flex-1">
+                        <h3 className="font-heading text-xl lg:text-2xl font-medium text-fortivex-text-primary mb-2">
+                          {tier.title}
+                        </h3>
+                        <p className="text-fortivex-text-secondary leading-relaxed">
+                          {tier.description}
+                        </p>
                       </div>
+                    </div>
+
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 mb-6 pl-[4.75rem]">
+                      {tier.bullets.map((bullet) => (
+                        <li key={bullet} className="flex items-start gap-2 text-sm text-fortivex-text-secondary">
+                          <Check size={15} className="text-fortivex-red shrink-0 mt-0.5" strokeWidth={2} />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="pl-[4.75rem]">
+                      <a
+                        href="#contact"
+                        onClick={(e) => handleSectionLinkClick(e, '#contact')}
+                        className="inline-flex items-center gap-2 text-sm font-medium text-fortivex-red group/link"
+                      >
+                        Get a quote
+                        <ArrowRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Extension services — quieter, smaller row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+              {extensions.map((ext) => {
+                const Icon = ext.icon;
+                return (
+                  <div
+                    key={ext.title}
+                    className="service-card glass-card p-5 flex items-start gap-4 transition-colors duration-300 hover:border-fortivex-red/40"
+                  >
+                    <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+                      <Icon size={18} className="text-fortivex-text-secondary" strokeWidth={1.5} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-heading text-base font-medium text-fortivex-text-primary mb-1">
+                        {ext.title}
+                      </h4>
+                      <p className="text-sm text-fortivex-text-secondary mb-2">
+                        {ext.description}
+                      </p>
+                      <a
+                        href="#contact"
+                        onClick={(e) => handleSectionLinkClick(e, '#contact')}
+                        className="text-xs font-medium text-fortivex-red hover:underline"
+                      >
+                        {ext.cta}
+                      </a>
                     </div>
                   </div>
                 );

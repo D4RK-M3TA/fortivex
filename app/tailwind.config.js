@@ -38,22 +38,23 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // FortiVex custom colors — white, black, red (logo-aligned)
+        // FortiVex custom colors — dark-mode-first, red accent (logo-aligned)
         fortivex: {
-          black: '#0a0a0a',
+          black: '#0a0a0b',
+          raised: '#111113',
           white: '#ffffff',
           red: '#E53935',
           text: {
-            primary: '#0a0a0a',
-            secondary: '#525252',
+            primary: '#F5F5F5',
+            secondary: '#8A8A8E',
           },
           surface: {
-            glass: 'rgba(255, 255, 255, 0.85)',
-            glassStrong: 'rgba(255, 255, 255, 0.95)',
+            glass: 'rgba(255, 255, 255, 0.04)',
+            glassStrong: 'rgba(20, 20, 22, 0.9)',
           },
           border: {
-            subtle: 'rgba(0, 0, 0, 0.08)',
-            strong: 'rgba(0, 0, 0, 0.18)',
+            subtle: 'rgba(255, 255, 255, 0.08)',
+            strong: 'rgba(255, 255, 255, 0.18)',
           },
           glow: 'rgba(229, 57, 53, 0.35)',
         },
