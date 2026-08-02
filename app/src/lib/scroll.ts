@@ -3,7 +3,9 @@ import type { MouseEvent } from 'react';
 /**
  * Scroll to a section by id in one shot (no stepping through intermediate sections).
  * Accepts "contact" or "#contact". Uses instant scroll so GSAP snap doesn't force multiple stops.
- * Syncs the URL hash (via replaceState, no history entry) so sections are deep-linkable.
+ * Deliberately does not touch the URL — changing it on every click reads as page
+ * navigation rather than in-page scrolling. Direct links to a section (e.g. a
+ * shared "#services" URL) are still honored on initial load in App.tsx.
  */
 export function scrollToSection(idOrHash: string): void {
   const id = idOrHash.startsWith('#') ? idOrHash.slice(1) : idOrHash;
@@ -11,7 +13,6 @@ export function scrollToSection(idOrHash: string): void {
   if (!el) return;
   const top = el.getBoundingClientRect().top + window.scrollY;
   window.scrollTo({ top, behavior: 'auto' });
-  history.replaceState(null, '', `#${id}`);
 }
 
 /**

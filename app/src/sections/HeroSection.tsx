@@ -188,7 +188,7 @@ export default function HeroSection() {
         />
       </svg>
 
-      <div className="w-full h-full flex items-center pt-24 lg:pt-0 px-6 lg:px-12 xl:px-20 relative z-10">
+      <div className="w-full h-full flex items-start lg:items-center pt-24 lg:pt-0 px-6 lg:px-12 xl:px-20 relative z-10">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Text Column */}
           <div ref={textColumnRef} className="relative z-10 max-w-xl" style={{ perspective: '1000px' }}>

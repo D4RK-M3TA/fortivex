@@ -1,4 +1,5 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect, useRef } from 'react';
+import type { Application } from '@splinetool/runtime';
 
 // Kick off the fetch at module-evaluation time (not on first render) so it
 // downloads in parallel with the rest of the app instead of after it mounts.
@@ -13,10 +14,31 @@ const Spline = lazy(() => splineModule);
 export interface SplineSceneProps {
   scene: string;
   className?: string;
-  onLoad?: (spline: unknown) => void;
+  onLoad?: (spline: Application) => void;
 }
 
 export function SplineScene({ scene, className, onLoad }: SplineSceneProps) {
+  const appRef = useRef<Application | null>(null);
+
+  // A backgrounded tab throttles rAF; Spline's own animation loop (which
+  // drives things like the robot's mouse-look) resumes with a huge elapsed
+  // delta after being away a while, causing it to lurch/oscillate wildly
+  // trying to "catch up". Stopping the runtime while hidden and restarting
+  // clean on return avoids that entirely.
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      const app = appRef.current;
+      if (!app) return;
+      if (document.visibilityState === 'hidden') {
+        app.stop();
+      } else {
+        app.play();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange);
+  }, []);
+
   return (
     <Suspense
       fallback={
@@ -25,7 +47,14 @@ export function SplineScene({ scene, className, onLoad }: SplineSceneProps) {
         </div>
       }
     >
-      <Spline scene={scene} className={className} onLoad={onLoad} />
+      <Spline
+        scene={scene}
+        className={className}
+        onLoad={(app) => {
+          appRef.current = app;
+          onLoad?.(app);
+        }}
+      />
     </Suspense>
   );
 }
